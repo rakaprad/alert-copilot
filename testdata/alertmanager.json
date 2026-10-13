@@ -1,0 +1,50 @@
+{
+  "version": "4",
+  "groupKey": "{}:{alertname=\"HighCPUUsage\"}",
+  "truncatedAlerts": 0,
+  "status": "firing",
+  "receiver": "alert-copilot",
+  "groupLabels": { "alertname": "HighCPUUsage" },
+  "commonLabels": { "alertname": "HighCPUUsage", "severity": "warning", "namespace": "payments" },
+  "commonAnnotations": {},
+  "externalURL": "http://alertmanager.monitoring.svc:9093",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "HighCPUUsage",
+        "severity": "warning",
+        "namespace": "payments",
+        "pod": "payments-api-7d9c6b5f8-x2kqj",
+        "instance": "10.0.3.17:8080",
+        "job": "kubernetes-pods"
+      },
+      "annotations": {
+        "summary": "CPU usage above 90% for 10 minutes",
+        "description": "Pod payments-api-7d9c6b5f8-x2kqj in namespace payments has been using 94% of its CPU limit for 10 minutes.",
+        "value": "94%"
+      },
+      "startsAt": "2026-10-13T02:14:05.123Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph?g0.expr=container_cpu_usage",
+      "fingerprint": "c6b1f0e5a1d2e3f4"
+    },
+    {
+      "status": "resolved",
+      "labels": {
+        "alertname": "HighCPUUsage",
+        "severity": "warning",
+        "namespace": "payments",
+        "pod": "payments-worker-5f7b8c9d4-abcde",
+        "instance": "10.0.3.22:8080"
+      },
+      "annotations": {
+        "summary": "CPU usage above 90% for 10 minutes"
+      },
+      "startsAt": "2026-10-13T01:40:00Z",
+      "endsAt": "2026-10-13T02:10:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph?g0.expr=container_cpu_usage",
+      "fingerprint": "a9e8d7c6b5a4f3e2"
+    }
+  ]
+}

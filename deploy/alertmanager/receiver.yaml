@@ -1,0 +1,19 @@
+# Snippet for alertmanager.yml: route alerts to alert-copilot.
+# The bearer token must match WEBHOOK_TOKEN in the alert-copilot secret.
+route:
+  receiver: alert-copilot
+  group_by: ["alertname", "namespace"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+receivers:
+  - name: alert-copilot
+    webhook_configs:
+      - url: http://alert-copilot.monitoring.svc/webhook/alertmanager
+        send_resolved: true
+        max_alerts: 10
+        http_config:
+          authorization:
+            type: Bearer
+            credentials_file: /etc/alertmanager/secrets/alert-copilot/token

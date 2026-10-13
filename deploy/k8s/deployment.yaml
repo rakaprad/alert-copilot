@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alert-copilot
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: alert-copilot
+spec:
+  # One replica: the AI cooldown cache is in-memory. See README roadmap.
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alert-copilot
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: alert-copilot
+    spec:
+      automountServiceAccountToken: false
+      # Room for in-flight alerts (AI timeout + notify) to drain on shutdown.
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: alert-copilot
+          image: ghcr.io/rakaprad/alert-copilot:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: AI_MODEL
+              value: claude-opus-5-5
+            - name: AI_EFFORT
+              value: low
+            - name: AI_COOLDOWN
+              value: 30m
+            - name: TELEGRAM_THREAD_ID
+              value: "0"
+          envFrom:
+            - secretRef:
+                name: alert-copilot
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            privileged: false
+            capabilities:
+              drop: ["ALL"]

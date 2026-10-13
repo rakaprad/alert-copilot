@@ -1,0 +1,9 @@
+{
+  "name": "BackupJobFailed",
+  "status": "firing",
+  "severity": "high",
+  "target": "pg-primary-01",
+  "summary": "Nightly pg_dump exited with code 1",
+  "description": "pg_dump: error: connection to server on socket \"/var/run/postgresql/.s.PGSQL.5432\" failed: FATAL: remaining connection slots are reserved for non-replication superuser connections",
+  "labels": { "env": "production", "team": "platform" }
+}

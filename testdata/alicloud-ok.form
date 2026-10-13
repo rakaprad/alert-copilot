@@ -1,0 +1,1 @@
+alertName=ECS%20CPU%20Utilization%20High&alertState=OK&curValue=41.2&instanceName=prod-web-01&metricName=CPUUtilization&namespace=acs_ecs_dashboard&regionName=Indonesia%20%28Jakarta%29&timestamp=1791864600000&triggerLevel=CRITICAL
